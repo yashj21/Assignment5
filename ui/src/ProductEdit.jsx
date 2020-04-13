@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom/cjs/react-dom.development';
 import graphQLFetch from './graphQLFetch.js';
 import NumInput from './NumInput.jsx';
+import TextInput from './TextInput.jsx';
 export default class ProductEdit extends React.Component {
     constructor() {
         super();
@@ -26,7 +27,6 @@ export default class ProductEdit extends React.Component {
           }
         }`;
         const { match: { params: { id } } } = this.props;
-        console.log({ id });
         const variables = { id };
         const response = await fetch(window.ENV.UI_API_ENDPOINT, {
           method: 'POST',
@@ -35,18 +35,15 @@ export default class ProductEdit extends React.Component {
         });
         const result = await response.json();
         //const data = await graphQLFetch(query, { id });
-        console.log(result);
-        console.log(result.data); 
         this.setState({ product : result.data.product});
       }
       handleChange(e,naturalValue){
         const { name, value: textValue } = e.target;
         const value = naturalValue === undefined ? textValue : naturalValue;
-        console.log(this.state);
         this.setState(prevState => ({
           product: { ...prevState.product, [name]: value },
         }));
-          console.log(this.state.product);
+        
       }
       async handleSubmit(e) {
         e.preventDefault();
@@ -64,12 +61,11 @@ export default class ProductEdit extends React.Component {
           body: JSON.stringify({ query, variables }),
         });
         this.loadData();
+        alert("Success!");
       }
     
     render(){
-        //console.log(this.state);
         const { product: { id } } = this.state;
-       // console.log({id})
         const { match: { params: { id: propsId } } } = this.props;
         if (id == null) {
           if (propsId != null) {
@@ -89,7 +85,7 @@ export default class ProductEdit extends React.Component {
         <br />
         <input type="text" name="productname" style={paddingStyle} value={productname} onChange={this.handleChange} />
         &nbsp;
-        <select id="productcat" value={productcat} style={paddingStyle} onChange={this.handleChange}>
+        <select name="productcat" value={productcat} style={paddingStyle} onChange={this.handleChange}>
         &nbsp;
           <option value="Shirts">Shirts</option>
           <option value="Jeans">Jeans</option>
@@ -105,10 +101,10 @@ export default class ProductEdit extends React.Component {
         <br />
         <NumInput name="productprice" onChange={this.handleChange} value={productprice} style={paddingStyle} />
         &nbsp;
-        <input type="text" name="producturl" style={paddingStyle} value={producturl} onChange={this.handleChange} />
+        <TextInput name="producturl" style={paddingStyle} value={producturl} onChange={this.handleChange} />
         <br />
         <br />
-        <button type="submit">AddProduct </button>
+        <button type="submit">Submit Changes </button>
       </form>
     );
     }

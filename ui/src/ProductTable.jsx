@@ -31,7 +31,8 @@ export default class ProductTable extends React.Component {
                 <th style={borderedStyle}>Category</th>
                 <th style={borderedStyle}>Price</th>
                 <th style={borderedStyle}>Image</th>
-                <th style={borderedStyle}>Action</th>
+                <th style={borderedStyle}>Edit</th>
+                <th style={borderedStyle}>Delete</th>
                 <th>&nbsp;</th>
               </tr>
             </thead>
