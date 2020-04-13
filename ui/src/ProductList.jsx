@@ -11,6 +11,7 @@ export default class ProductList extends React.Component {
         productArray: [],
       };
       this.createProducts = this.createProducts.bind(this);
+      this.deleteProduct = this.deleteProduct.bind(this);
     }
   
     componentDidMount() {
@@ -63,6 +64,22 @@ export default class ProductList extends React.Component {
     //         productArray:existingLists
     //     });
     // }
+    async deleteProduct(id) {
+      const query = `mutation productDelete($id: Int!) {
+        productDelete(id: $id)
+      }`;
+      // // const { products } = this.state;
+      // // const { location: { pathname, search }, history } = this.props;
+      // // const { id } = issues[index];
+      const variables = { id };
+      await fetch(window.ENV.UI_API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, variables }),
+      });
+      alert('Product deleted product successfully!');
+      this.loadData();
+    }
     render() {
       const curstate = this.state;
       return (
@@ -70,7 +87,7 @@ export default class ProductList extends React.Component {
           <h1>My Company inventory</h1>
           <h4>Showing all Available products</h4>
           <hr />
-          <ProductTable productArray={curstate.productArray} />
+          <ProductTable productArray={curstate.productArray} deleteProduct={this.deleteProduct}/>
           <hr />
           <h4>Add a new product to inventory</h4>
           <ProductAdd createProducts={this.createProducts} />

@@ -13,6 +13,7 @@ const resolvers = {
       setAboutMessage,
       productAdd: prod.add,
       productUpdate: prod.productUpdate,
+      productDelete: prod.remove,
     },
   };
   const server = new ApolloServer({

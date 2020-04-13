@@ -22,10 +22,10 @@ input ProductInputs {
 }
 
 input productUpdateInputs{
-  Name: String!
-	Price: Float
-	Image: String
-  Category: Category!
+  productname: String!
+	productprice: Float
+	producturl: String
+  productcat: Category!
 }
 type Query {
   about: String!
@@ -37,5 +37,5 @@ type Mutation {
   setAboutMessage(message: String!): String
   productAdd(product: ProductInputs!): Product!
   productUpdate(id: Int!, changes: productUpdateInputs!): Product! 
-
+  productDelete(id: Int!): Boolean!
 }

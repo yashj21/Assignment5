@@ -4,9 +4,9 @@ import React from '../node_modules/react';
 import ReactDOM from '../node_modules/react-dom';
 
 export default class ProductTable extends React.Component {
-    //   constructor(props){
-    //         super(props)
-    //     }
+      constructor(props){
+            super(props)
+        }
       render() {
         const rows = [];
         //  let productArray = this.props.productArray;
@@ -16,11 +16,9 @@ export default class ProductTable extends React.Component {
           prop.productArray.forEach((product) => {
             rows.push(<ProductRow
               key={product.id}
-              productid={product.id}
-              productname={product.productname}
-              productcat={product.productcat}
-              productprice={dollar + product.productprice}
-              producturl={product.producturl}
+              product={product}
+              deleteProduct={prop.deleteProduct}
+              index={product.id}
             />);
           });
         }

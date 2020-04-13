@@ -1,16 +1,23 @@
 import React from 'react';
 import { render } from 'react-dom/cjs/react-dom.development';
 import graphQLFetch from './graphQLFetch.js';
-
+import NumInput from './NumInput.jsx';
 export default class ProductEdit extends React.Component {
     constructor() {
         super();
-        this.state = {    product: []   };
+        this.state = {    product: {}   };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     };
     componentDidMount() {
         this.loadData();
+    }
+    componentDidUpdate(prevProps) {
+      const { match: { params: { id: prevId } } } = prevProps;
+      const { match: { params: { id } } } = this.props;
+      if (id !== prevId) {
+        this.loadData();
+      }
     }
     async loadData() {
         const query = `query product($id:Int!) {
@@ -32,12 +39,14 @@ export default class ProductEdit extends React.Component {
         console.log(result.data); 
         this.setState({ product : result.data.product});
       }
-      handleChange(e){
-        const { name, value: textValue } = event.target;
-        console.log({ name, value: textValue });
+      handleChange(e,naturalValue){
+        const { name, value: textValue } = e.target;
+        const value = naturalValue === undefined ? textValue : naturalValue;
+        console.log(this.state);
         this.setState(prevState => ({
-            product: { ...prevState.product, [name]: value },
-          }));
+          product: { ...prevState.product, [name]: value },
+        }));
+          console.log(this.state.product);
       }
       async handleSubmit(e) {
         e.preventDefault();
@@ -54,14 +63,13 @@ export default class ProductEdit extends React.Component {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query, variables }),
         });
-        alert('Romil\'s Product updated Successfully');
         this.loadData();
       }
     
     render(){
-        console.log(this.state);
+        //console.log(this.state);
         const { product: { id } } = this.state;
-        console.log({id})
+       // console.log({id})
         const { match: { params: { id: propsId } } } = this.props;
         if (id == null) {
           if (propsId != null) {
@@ -95,9 +103,9 @@ export default class ProductEdit extends React.Component {
         <label htmlFor="url" style={paddingStyle2}>Image URL</label>
         &nbsp;
         <br />
-        <input type="text" name="price" onChange={this.handleChange} value={productprice} style={paddingStyle} />
+        <NumInput name="productprice" onChange={this.handleChange} value={productprice} style={paddingStyle} />
         &nbsp;
-        <input type="text" name="url" style={paddingStyle} value={producturl} onChange={this.handleChange} />
+        <input type="text" name="producturl" style={paddingStyle} value={producturl} onChange={this.handleChange} />
         <br />
         <br />
         <button type="submit">AddProduct </button>
